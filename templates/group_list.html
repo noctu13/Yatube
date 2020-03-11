@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Список сообществ{% endblock %}
+{% block content %}
+    <h1>
+        Список сообществ
+    </h1>
+
+    {% for group in groups %}
+    <h3>
+        Название: {{ group.title }}
+    </h3>
+    <p>{{ group.description|linebreaksbr }}</p>
+    <hr>
+    {% endfor %}
+
+{% endblock %}
