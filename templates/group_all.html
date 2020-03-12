@@ -5,6 +5,7 @@
 
     {% for group in groups %}
     <h3>{{ group.title }}</h3>
+    <a href="{% url "group" slug=group.slug %}">ссылка</a>
     <p>{{ group.description|linebreaksbr }}</p>
     <hr>
     {% endfor %}
