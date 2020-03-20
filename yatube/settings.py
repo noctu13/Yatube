@@ -25,7 +25,10 @@ SECRET_KEY = 'pg2mok-tk4tlev$yjb+&sa^-03tfrw-u4-y(=@@25^2$)zpn1('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'testserver',
+    '127.0.0.1',
+]
 
 
 # Application definition
