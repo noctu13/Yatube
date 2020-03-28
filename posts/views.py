@@ -78,4 +78,4 @@ def post_edit(request, username, post_id):
             return redirect('index')
     else:
         form = PostForm(instance=post)
-    return render(request, "new_post.html", {"form": form})
+    return render(request, "edit_post.html", {"form": form})

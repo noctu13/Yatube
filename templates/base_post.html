@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    {% load user_filters %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="conteiner">
+            <div class="form-group row mt-3">
+                <label class="col-md-2 col-form-label text-md-right">
+                    Сообщение*
+                </label>
+                <div class="col-md-10">
+                    {{ form.text|addclass:"form-control" }}
+                </div>                
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label text-md-right">
+                    Группа
+                </label>
+                <div class="form-group col-md-3">
+                    {{ form.group|addclass:"form-control" }}
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-1 offset-md-2">
+                    <button type="submit" class="btn btn-primary">
+                        {% block button %}
+                            <!-- Название кнопки -->
+                        {% endblock button %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
