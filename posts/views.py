@@ -68,9 +68,11 @@ def post_edit(request, username, post_id):
             return render(request, "404.html")
         #тут может случится потенциальная серверная ошибка?
     else:
-        return render(request, "403.html")
+        #return render(request, "403.html") было бы логичнее
+        return redirect('post', username=username, post_id=post_id)
+    #здесь вроде можно использовать вьюху new_post, если передавать post
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
