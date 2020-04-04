@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Список сообществ{% endblock %}
 {% block content %}
-    <h1>Список сообществ</h1>
-
-    {% for group in page %}
-        <div class="col-md-9">
+    <div class="col-md-12">
+        <h1>Список сообществ</h1>
+        {% for group in page %}
             <div class="card mb-3 mt-1 shadow-sm">
                     <div class="card-body">
                             <p class="card-text">
@@ -15,11 +14,10 @@
                             </p>
                     </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-    {% if page.has_other_pages %}
-        {% include "paginator.html" with items=page paginator=paginator%}
-    {% endif %}
-
+        {% if page.has_other_pages %}
+            {% include "paginator.html" with items=page paginator=paginator%}
+        {% endif %}
+    </div>
 {% endblock %}

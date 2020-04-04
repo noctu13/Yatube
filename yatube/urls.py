@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.flatpages import views
+from django.conf.urls import handler403, handler404, handler500
 from posts.urls import user_patterns
+
+handler404 = "posts.views.page_not_found"
+handler403 = "posts.views.permission_denied"
+handler500 = "posts.views.server_error"
 
 urlpatterns = [
     path("", include("posts.urls")),
