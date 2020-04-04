@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Профиль пользователя {{ profile.username }}{% endblock %}
+{% block title %}Профиль пользователя {{ author.username }}{% endblock %}
 {% block content %}
         <div class="row">
                 <div class="col-md-3 mb-3 mt-1">
                         <div class="card">
                                 <div class="card-body">
                                         <div class="h2">
-                                                {{ profile.first_name }} {{ profile.last_name }}
+                                                {{ author.first_name }} {{ author.last_name }}
                                         </div>
                                         <div class="h3 text-muted">
-                                                @{{ profile.username }}
+                                                @{{ author.username }}
                                         </div>
                                 </div>
                                 <ul class="list-group list-group-flush">
@@ -32,13 +32,13 @@
                         <div class="card mb-3 mt-1 shadow-sm">
                                 <div class="card-body">
                                         <p class="card-text">
-                                                <a href="/{{ profile.username }}/"><strong class="d-block text-gray-dark">@{{ profile.username }}</strong></a>
+                                                <a href="/{{ author.username }}/"><strong class="d-block text-gray-dark">@{{ author.username }}</strong></a>
                                                 {{ post.text }}
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group ">
-                                                        <a class="btn btn-sm text-muted" href="/leo/37/" role="button">Добавить комментарий</a>
-                                                        <a class="btn btn-sm text-muted" href="/leo/37/edit" role="button">Редактировать</a>
+                                                        <a class="btn btn-sm text-muted" href="/{{ author.username }}/{{ post.pk }}/" role="button">Добавить комментарий</a>
+                                                        <a class="btn btn-sm text-muted" href="/{{ author.username }}/{{ post.pk }}/edit/" role="button">Редактировать</a>
                                                 </div>
                                                 <small class="text-muted">{{ post.pub_date }}</small>
                                         </div>

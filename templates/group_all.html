@@ -4,10 +4,18 @@
     <h1>Список сообществ</h1>
 
     {% for group in page %}
-    <h3>{{ group.title }}</h3>
-    <a href="{% url "group" slug=group.slug %}">ссылка</a>
-    <p>{{ group.description|linebreaksbr }}</p>
-    <hr>
+        <div class="col-md-9">
+            <div class="card mb-3 mt-1 shadow-sm">
+                    <div class="card-body">
+                            <p class="card-text">
+                                <strong class="d-block text-gray-dark">
+                                    <a href="/group/{{ group.slug }}/">@{{ group.title }}</a>
+                                </strong>
+                                {{ group.description }}
+                            </p>
+                    </div>
+            </div>
+        </div>
     {% endfor %}
 
     {% if page.has_other_pages %}
