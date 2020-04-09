@@ -1,4 +1,4 @@
-from .models import Post
+from .models import Post, Comment
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
@@ -10,4 +10,12 @@ class PostForm(ModelForm):
             'text': _('Текст'),
             'group': _('Группа'),
             'image': _('Картинка'),
+        }
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        labels = {
+            'text': _('Текст'),
         }

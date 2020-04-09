@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import Post, Group, User
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 class PageBack:
     def __init__(self, request, _list):
@@ -46,7 +46,8 @@ def post_view(request, username, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if author != post.author:
         return render(request, "404.html")
-    return render(request, "post.html", {"author": author, "post": post})
+    comments = post.comments.all().order_by("-created")
+    return render(request, "post.html", {"post": post, "items": comments})
 
 @login_required
 def post_edit(request, username, post_id):
@@ -59,6 +60,21 @@ def post_edit(request, username, post_id):
         form.save()
         return redirect('post', username=username, post_id=post_id)
     return render(request, "edit_post.html", {"form": form, "post": post})
+
+def add_comment(request, username, post_id):
+    author = get_object_or_404(User, username=username)
+    post = get_object_or_404(Post, pk=post_id)
+    if author != post.author:
+        return render(request, "404.html")
+    form = CommentForm(request.POST or None)
+    comments = post.comments.all().order_by("-created")
+    if request.method == 'POST' and form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.author = request.user
+        comment.save()
+        return redirect('post', username=username, post_id=post_id)
+    return render(request, "post.html", {"form": form, "post": post, "items": comments})
 
 def page_not_found(request, exception):
     return render(request, "misc/404.html", {"path": request.path}, status=404)
