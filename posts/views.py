@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from .models import Post, Group, User
 from .forms import PostForm, CommentForm
 
@@ -10,7 +11,7 @@ class PageBack:
         self.page = self.paginator.get_page(request.GET.get('page'))
 
 def index(request):
-    post_list = Post.objects.order_by("-pub_date").all()
+    post_list = Post.objects.all().order_by("-pub_date")
     page_back = PageBack(request, post_list)
     return render(request, 'index.html', {'page': page_back.page, 'paginator': page_back.paginator})
 
@@ -45,9 +46,10 @@ def post_view(request, username, post_id):
     author = get_object_or_404(User, username=username)
     post = get_object_or_404(Post, pk=post_id)
     if author != post.author:
-        return render(request, "404.html")
+        raise Http404()
     comments = post.comments.all().order_by("-created")
-    return render(request, "post.html", {"post": post, "items": comments})
+    form = CommentForm(request.POST or None)
+    return render(request, "post.html", {"form": form, "post": post, "items": comments})
 
 @login_required
 def post_edit(request, username, post_id):
@@ -65,7 +67,7 @@ def add_comment(request, username, post_id):
     author = get_object_or_404(User, username=username)
     post = get_object_or_404(Post, pk=post_id)
     if author != post.author:
-        return render(request, "404.html")
+        raise Http404()
     form = CommentForm(request.POST or None)
     comments = post.comments.all().order_by("-created")
     if request.method == 'POST' and form.is_valid():
