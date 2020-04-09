@@ -48,5 +48,9 @@ class PostViewsTestCase(TestCase):
         response = self.client.get('/duncan/%s/' % post.pk)
         self.assertContains(response, text)
 
+    def test_404(self):
+        response = self.client.get('fakepage')
+        self.assertEqual(response.status_code, 404)
+
     def cleanUp(self):
         pass

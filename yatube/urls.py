@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.flatpages import views
 from django.conf.urls import handler403, handler404, handler500
+from django.conf import settings
+from django.conf.urls.static import static
 from posts.urls import user_patterns
 
 handler404 = "posts.views.page_not_found"
@@ -32,3 +34,7 @@ urlpatterns = [
     path('about-spec/', views.flatpage, {'url': '/about-spec/'}, name='terms'),
     path("", include(user_patterns)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

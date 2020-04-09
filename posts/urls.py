@@ -13,3 +13,9 @@ user_patterns = [
     path("<username>/<int:post_id>/", views.post_view, name="post"),
     path("<username>/<int:post_id>/edit/", views.post_edit, name="post_edit"),
 ]
+
+error_patterns = [
+    path("404/", views.page_not_found, name="pnf", kwargs={'exception': Exception("Page not Found!")}),
+    path("403/", views.permission_denied, name="pd", kwargs={'exception': Exception("Permission denied!")}),
+    path("500/", views.server_error, name="se"),
+]

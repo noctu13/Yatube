@@ -17,3 +17,7 @@ venv.bak/
 
 # email emulation
 sent_emails/
+
+# static+media
+static/
+media/

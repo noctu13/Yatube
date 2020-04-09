@@ -16,7 +16,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list = Post.objects.filter(group=group).order_by("-pub_date")
+    post_list = group.posts.all().order_by("-pub_date")
     page_back = PageBack(request, post_list)
     return render(request, "group.html", {"group": group, 'page': page_back.page, 'paginator': page_back.paginator})
 
@@ -27,20 +27,17 @@ def group_all(request):
 
 @login_required
 def new_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('index')
-    else:
-        form = PostForm()
+    form = PostForm(request.POST or None, files=request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('index')
     return render(request, "new_post.html", {"form": form})
 
 def profile_view(request, username):
     author = get_object_or_404(User, username=username)
-    post_list = Post.objects.filter(author=author).order_by("-pub_date")
+    post_list = author.posts.all().order_by("-pub_date")
     page_back = PageBack(request, post_list)
     return render(request, "profile.html", {"author": author, 'page': page_back.page, 'paginator': page_back.paginator})
 
@@ -57,13 +54,10 @@ def post_edit(request, username, post_id):
     if request.user != author:
         return redirect('post', username=username, post_id=post_id)
     post = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect('post', username=username, post_id=post_id)
-    else:
-        form = PostForm(instance=post)
+    form = PostForm(request.POST or None, files=request.FILES or None, instance=post)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('post', username=username, post_id=post_id)
     return render(request, "edit_post.html", {"form": form, "post": post})
 
 def page_not_found(request, exception):
