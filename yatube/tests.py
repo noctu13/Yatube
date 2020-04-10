@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from posts.models import User, Post
+from posts.models import User, Post, Group
 
 class PostViewsTestCase(TestCase):
     def setUp(self):
@@ -24,7 +24,7 @@ class PostViewsTestCase(TestCase):
     def test_post_creation_forbidden(self):
         response = self.client.get('/new/', follow=True)
         self.assertRedirects(response, '/auth/login/?next=%2Fnew%2F')
-        
+
     def test_post(self):
         text = 'some incoherent text'
         post = Post.objects.create(text=text, author=self.user)
@@ -51,6 +51,24 @@ class PostViewsTestCase(TestCase):
     def test_404(self):
         response = self.client.get('fakepage')
         self.assertEqual(response.status_code, 404)
+
+    def test_image(self):
+        self.client.force_login(self.user)
+        highlander = Group.objects.create(title="hl", slug="hl", description="hl group")
+        Post.objects.create(text='text', author=self.user, image="posts/pic.jpg", group=highlander)
+        response = self.client.get('')
+        self.assertContains(response, "<img")
+        response = self.client.get('/duncan/')
+        self.assertContains(response, "<img")
+        response = self.client.get('/group/hl/')
+        self.assertContains(response, "<img")
+
+    def test_not_image(self):
+        self.client.force_login(self.user)
+        with open('yatube/tests.py', 'rb') as open_file:
+            self.client.post('/new/', {'text': 'msg', 'image': open_file})
+        response = self.client.get('')
+        self.assertNotContains(response, '<img')
 
     def cleanUp(self):
         pass
