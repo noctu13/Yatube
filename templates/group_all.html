@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Список сообществ{% endblock %}
 {% block content %}
+    {% include 'menu.html' with group_all=True %}
     <div class="col-md-12">
         <h1>Список сообществ</h1>
         {% for group in page %}
@@ -8,7 +9,7 @@
                     <div class="card-body">
                             <p class="card-text">
                                 <strong class="d-block text-gray-dark">
-                                    <a href="/group/{{ group.slug }}/">#{{ group.title }}</a>
+                                    <a href="{% url 'group' group.slug %}">#{{ group.title }}</a>
                                 </strong>
                                 {{ group.description }}
                             </p>

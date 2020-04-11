@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link {% if index %}active{% endif %}" href="{% url 'index' %}">Все авторы</a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link {% if follow %}active{% endif %}" href="{% url 'follow_index' %}">Избранные авторы</a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a class="nav-link {% if group_all %}active{% endif %}" href="{% url 'group_all' %}">Группы</a>
+    </li>
+</ul>

@@ -24,3 +24,11 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     created = models.DateTimeField('creation date', auto_now_add=True, db_index=True)
+
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    class Meta:
+        unique_together = ['user', 'author']
+    def __str__(self):
+        return "{} follow {}".format(self.user.username, self.author.username)
